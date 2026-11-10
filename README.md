@@ -2,7 +2,7 @@
 
 A conversational AI agent with **web search** and **persistent conversation memory**.
 
-Built with TypeScript, OpenAI GPT-4o, Tavily search, and SQLite.
+Built with TypeScript, Gemini or OpenAI, Tavily search, and SQLite.
 
 ## Quick Start
 
@@ -10,11 +10,11 @@ Built with TypeScript, OpenAI GPT-4o, Tavily search, and SQLite.
 # 1. Install dependencies
 npm install
 
-# 2. Set up API keys
+# 2. Set up API keys (both are FREE)
 cp .env.example .env
 # Edit .env with your keys:
-#   OPENAI_API_KEY=sk-...
-#   TAVILY_API_KEY=tvly-...
+#   GOOGLE_API_KEY=...   (free at https://aistudio.google.com/apikey)
+#   TAVILY_API_KEY=...   (free at https://tavily.com)
 
 # 3. Run
 npm run dev
@@ -22,15 +22,17 @@ npm run dev
 
 ## API Keys Required
 
-| Key | Get it from | Free tier |
-|-----|-------------|-----------|
-| `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com) | No (pay-as-you-go) |
-| `TAVILY_API_KEY` | [tavily.com](https://tavily.com) | Yes (1,000 searches/month) |
+| Key | Get it from | Cost |
+|-----|-------------|------|
+| `GOOGLE_API_KEY` | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) | **Free** |
+| `TAVILY_API_KEY` | [tavily.com](https://tavily.com) | **Free** (1,000 searches/month) |
+
+> **Optional**: Set `OPENAI_API_KEY` instead of `GOOGLE_API_KEY` to use GPT-4o (paid). If both keys are set, Google is selected by default; set `LLM_PROVIDER=openai` to choose OpenAI.
 
 ## What it does
 
 - **Web search**: Searches the web in real time for current information (pricing, news, releases, etc.)
-- **Persistent memory**: Remembers every conversation across sessions. Ask "what did we discuss last Tuesday?" and it'll find it.
+- **Persistent memory**: Retrieves earlier messages internally for follow-ups such as "what did we discuss last Tuesday?" The model has exactly one tool: web search.
 - **Streaming**: Responses stream in real time. Tool usage is shown as it happens.
 - **Parallel search**: When checking multiple items, searches run simultaneously for speed.
 
@@ -44,13 +46,16 @@ All configuration is via environment variables (see `.env.example`):
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `OPENAI_API_KEY` | (required) | OpenAI API key |
-| `TAVILY_API_KEY` | (required) | Tavily search API key |
-| `MODEL_NAME` | `gpt-4o` | OpenAI model |
+| `GOOGLE_API_KEY` | (required*) | Google Gemini API key (free) |
+| `OPENAI_API_KEY` | (optional) | OpenAI API key (paid, used instead of Google if set) |
+| `TAVILY_API_KEY` | (required) | Tavily search API key (free) |
+| `LLM_PROVIDER` | inferred | `google` or `openai`; resolves which model endpoint to use when both keys are set |
+| `MODEL_NAME` | auto | `gemini-2.0-flash` for Google, `gpt-4o` for OpenAI |
 | `MAX_CONTEXT_MESSAGES` | `40` | Messages kept in LLM context |
 | `MAX_SEARCH_RESULTS` | `6` | Results per web search |
 | `MAX_AGENT_STEPS` | `10` | Max tool-calling iterations per turn |
 | `DB_PATH` | `./data/memory.db` | SQLite database location |
+| `TIME_ZONE` | `Asia/Kolkata` | Calendar timezone used to interpret and display memory dates |
 
 ## Project Structure
 

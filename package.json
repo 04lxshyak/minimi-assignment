@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc",
+    "test": "tsx --test src/memory/store.test.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {

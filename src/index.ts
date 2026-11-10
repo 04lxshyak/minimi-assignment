@@ -33,12 +33,6 @@ function printBanner(stats: { totalSessions: number; totalMessages: number }): v
 function printToolStart(name: string, args: Record<string, any>): void {
   if (name === 'web_search') {
     console.log(chalk.dim(`  🔍 Searching: "${args.query || ''}"`));
-  } else if (name === 'recall_memory') {
-    const parts: string[] = [];
-    if (args.query) parts.push(`"${args.query}"`);
-    if (args.date_from) parts.push(`from ${args.date_from}`);
-    if (args.date_to) parts.push(`to ${args.date_to}`);
-    console.log(chalk.dim(`  📝 Recalling: ${parts.join(' ') || 'recent conversations'}`));
   }
 }
 
